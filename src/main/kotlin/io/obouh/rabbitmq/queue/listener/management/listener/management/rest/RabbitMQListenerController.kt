@@ -1,7 +1,7 @@
 package io.obouh.rabbitmq.queue.listener.management.listener.management.rest
 
 import io.obouh.rabbitmq.queue.listener.management.listener.management.service.dto.RabbitMQListener
-import io.obouh.rabbitmq.queue.listener.management.listener.management.service.dto.RabbitMQListenerManager
+import io.obouh.rabbitmq.queue.listener.management.listener.management.service.RabbitMQListenerManager
 import org.springframework.web.bind.annotation.*
 
 @RestController
