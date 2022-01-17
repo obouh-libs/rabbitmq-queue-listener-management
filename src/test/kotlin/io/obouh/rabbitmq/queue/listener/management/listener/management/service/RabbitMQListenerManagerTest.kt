@@ -1,7 +1,9 @@
 package io.obouh.rabbitmq.queue.listener.management.listener.management.service
 
+import io.obouh.rabbitmq.queue.listener.management.listener.management.exceptions.ListenerContainerNotFound
 import io.obouh.rabbitmq.queue.listener.management.listener.management.service.dto.RabbitMQListener
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 import org.mockito.InjectMocks
@@ -35,6 +37,14 @@ class RabbitMQListenerManagerTest {
     }
 
     @Test
+    fun should_not_stop_rabbitmq_listener_by_id_when_not_found (){
+        // Given && When && Then
+        Assertions.assertThrows(ListenerContainerNotFound::class.java) {
+            rabbitMQListenerManager.stop("not_found")
+        }
+    }
+
+    @Test
     fun should_start_rabbitmq_listener_by_id (){
         // Given
         val id = "listener_id"
@@ -46,6 +56,14 @@ class RabbitMQListenerManagerTest {
 
         // Then
         verify(messageListenerContainer, times(1)).start()
+    }
+
+    @Test
+    fun should_not_start_rabbitmq_listener_by_id_when_not_found (){
+        // Given && When && Then
+        Assertions.assertThrows(ListenerContainerNotFound::class.java) {
+            rabbitMQListenerManager.start("not_found")
+        }
     }
 
     @Test

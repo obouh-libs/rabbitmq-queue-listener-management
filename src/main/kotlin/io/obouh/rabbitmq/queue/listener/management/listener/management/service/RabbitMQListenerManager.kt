@@ -1,5 +1,6 @@
 package io.obouh.rabbitmq.queue.listener.management.listener.management.service
 
+import io.obouh.rabbitmq.queue.listener.management.listener.management.exceptions.ListenerContainerNotFound
 import io.obouh.rabbitmq.queue.listener.management.listener.management.service.dto.RabbitMQListener
 import org.springframework.amqp.rabbit.listener.MessageListenerContainer
 import org.springframework.amqp.rabbit.listener.RabbitListenerEndpointRegistry
@@ -9,16 +10,22 @@ import org.springframework.stereotype.Service
 class RabbitMQListenerManager(val rabbitListenerEndpointRegistry: RabbitListenerEndpointRegistry) {
 
     fun stop(id : String){
-       val listenerContainer : MessageListenerContainer = rabbitListenerEndpointRegistry.getListenerContainer(id);
+       val listenerContainer : MessageListenerContainer? = rabbitListenerEndpointRegistry.getListenerContainer(id);
         if(listenerContainer != null){
             listenerContainer.stop()
+        }
+        else {
+            throw ListenerContainerNotFound("Listener container having id $id not found")
         }
     }
 
     fun start(id : String){
-        val listenerContainer : MessageListenerContainer = rabbitListenerEndpointRegistry.getListenerContainer(id)
-        if(listenerContainer != null){
+        val listenerContainer : MessageListenerContainer? = rabbitListenerEndpointRegistry.getListenerContainer(id)
+        if(null != listenerContainer){
             listenerContainer.start()
+        }
+        else {
+            throw ListenerContainerNotFound("Listener container having id $id not found")
         }
     }
 
